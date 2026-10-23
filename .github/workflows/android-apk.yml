@@ -1,0 +1,102 @@
+name: Build AlteraVie Android APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      backend_url:
+        description: "Public HTTPS URL of the deployed AlteraVie FastAPI backend"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build-apk:
+    name: Build debug APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Validate backend URL
+        shell: bash
+        env:
+          BACKEND_URL: ${{ inputs.backend_url }}
+        run: |
+          if [[ "$BACKEND_URL" != https://* ]]; then
+            echo "::error::Enter the public HTTPS URL of the deployed backend."
+            exit 1
+          fi
+          echo "VITE_API_BASE=${BACKEND_URL%/}" >> "$GITHUB_ENV"
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Extract prepared AlteraVie source
+        shell: bash
+        run: |
+          test -f altandroid_free_android_ready.zip || {
+            echo "::error::Expected altandroid_free_android_ready.zip in repository root."
+            exit 1
+          }
+          mkdir source
+          unzip -q altandroid_free_android_ready.zip -d source
+          test -f source/altandroid/frontend/package.json || {
+            echo "::error::Prepared archive does not contain altandroid/frontend/package.json."
+            exit 1
+          }
+          echo "PROJECT_DIR=$GITHUB_WORKSPACE/source/altandroid" >> "$GITHUB_ENV"
+          find source -type f \( -name '.env' -o -name '.env.*' \) -delete
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: source/altandroid/frontend/package-lock.json
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK platform
+        run: sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Install frontend dependencies
+        working-directory: source/altandroid/frontend
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci --no-audit --no-fund
+          else
+            npm install --no-audit --no-fund
+          fi
+
+      - name: Build frontend
+        working-directory: source/altandroid/frontend
+        env:
+          VITE_API_BASE: ${{ inputs.backend_url }}
+        run: npm run build
+
+      - name: Generate and sync Android project
+        working-directory: source/altandroid/frontend
+        run: |
+          npx cap add android
+          npx cap sync android
+
+      - name: Build debug APK
+        working-directory: source/altandroid/frontend/android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AlteraVie-Android-debug-apk
+          path: source/altandroid/frontend/android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
