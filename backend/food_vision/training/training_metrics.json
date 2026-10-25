@@ -1,0 +1,162 @@
+{
+  "per_class": {
+    "Biryani": {
+      "precision": 0.8627,
+      "recall": 0.9778,
+      "f1": 0.9167,
+      "support": 45
+    },
+    "Caesar Salad": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "Chole Bhature": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "Dabeli": {
+      "precision": 0.95,
+      "recall": 0.95,
+      "f1": 0.95,
+      "support": 40
+    },
+    "Dal": {
+      "precision": 1.0,
+      "recall": 0.9434,
+      "f1": 0.9709,
+      "support": 53
+    },
+    "Dhokla": {
+      "precision": 0.9348,
+      "recall": 0.8776,
+      "f1": 0.9053,
+      "support": 49
+    },
+    "Dosa": {
+      "precision": 0.9429,
+      "recall": 1.0,
+      "f1": 0.9706,
+      "support": 33
+    },
+    "French Fries": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "Fried Rice": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "Hamburger": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "Ice Cream": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "Jalebi": {
+      "precision": 0.9841,
+      "recall": 1.0,
+      "f1": 0.992,
+      "support": 62
+    },
+    "Kathi Roll": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "Kofta": {
+      "precision": 0.7059,
+      "recall": 0.75,
+      "f1": 0.7273,
+      "support": 32
+    },
+    "Naan": {
+      "precision": 0.9571,
+      "recall": 1.0,
+      "f1": 0.9781,
+      "support": 67
+    },
+    "Omelette": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "Pakora": {
+      "precision": 0.9403,
+      "recall": 0.9403,
+      "f1": 0.9403,
+      "support": 67
+    },
+    "Pancakes": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "Paneer (curry)": {
+      "precision": 0.9535,
+      "recall": 0.8039,
+      "f1": 0.8723,
+      "support": 51
+    },
+    "Pani Puri": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "Pav Bhaji": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "Pizza": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "Steak": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "Sushi": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "Vada Pav": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    }
+  },
+  "macro_avg": {
+    "precision": 0.3693,
+    "recall": 0.3697,
+    "f1": 0.3689
+  },
+  "weak_classes": [],
+  "weights_path": "D:\\lectures\\nutrition-mvp\\nutrition-mvp\\backend\\food_vision\\model_weights.pth",
+  "device": "cpu"
+}

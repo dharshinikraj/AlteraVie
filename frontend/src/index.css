@@ -1,0 +1,671 @@
+@import "tailwindcss";
+
+@variant dark (.dark &);
+
+@theme {
+  /* Strictly defined palette variables */
+  --color-brand-green: #3AAE6F;
+  --color-brand-yellow: #F4B942;
+  --color-brand-white: #FFFFFF;
+  --color-brand-charcoal: #4A4A4A;
+  --color-brand-sage: #DCEBD8;
+
+  /* Color map overrides for standard utility classes */
+  --color-green-primary: #3AAE6F;
+  --color-yellow-accent: #F4B942;
+  --color-charcoal-dark: #4A4A4A;
+  --color-sage-light: #DCEBD8;
+
+  /* Typography System */
+  --font-display: "Archivo Black", "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-heading: "Plus Jakarta Sans", "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "Space Grotesk", ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    background-color: #FFFFFF;
+    color: #4A4A4A;
+    scroll-behavior: smooth;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  html.dark {
+    background-color: #0F172A;
+    color: #F8FAFC;
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: #4A4A4A;
+    background-color: #FFFFFF;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  html.dark body {
+    background-color: #0F172A;
+    color: #F8FAFC;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #4A4A4A;
+  }
+
+  html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark h5, html.dark h6 {
+    color: #F8FAFC;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom Glass & UI Utilities */
+.glass-nav-organic {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(220, 235, 216, 0.6);
+  transition: all 0.3s ease;
+}
+
+html.dark .glass-nav-organic {
+  background: rgba(15, 23, 42, 0.92);
+  border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+}
+
+/* Soft Hover Glow Effect with Yellow #F4B942 */
+.glow-yellow-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glow-yellow-hover:hover {
+  box-shadow: 0 0 25px -3px rgba(244, 185, 66, 0.45);
+}
+
+/* Green Action Button Hover */
+.btn-green-primary {
+  background-color: #3AAE6F;
+  color: #FFFFFF;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-green-primary:hover {
+  background-color: #339961;
+  box-shadow: 0 10px 25px -5px rgba(58, 174, 111, 0.35), 0 0 15px 1px rgba(244, 185, 66, 0.3);
+  transform: translateY(-2px) scale(1.03);
+}
+
+/* Custom Scrolldeck Deck Card Shadow */
+.card-stack-shadow {
+  box-shadow: 0 20px 40px -15px rgba(74, 74, 74, 0.08), 0 0 1px 1px rgba(74, 74, 74, 0.05);
+}
+
+/* Small uppercase letter-spaced labels */
+.label-eyebrow {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* Device-safe responsive defaults */
+html { -webkit-text-size-adjust: 100%; }
+body { min-width: 320px; }
+img, video, canvas, svg { max-width: 100%; }
+input, textarea, select, button { font-size: 16px; }
+@supports (padding: max(0px)) {
+  body { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+}
+@media (max-width: 640px) {
+  .leaflet-container { min-height: 320px; }
+  h1 { overflow-wrap: anywhere; }
+}
+
+/* ===== Mobile-first AlteraVie app shell ===== */
+:root { --app-green: #3AAE6F; --app-surface: #ffffff; --app-bg: #F7F9F7; }
+.app-shell-main { padding-bottom: 0; }
+.app-topbar {
+  position: sticky; top: 0; z-index: 45;
+  background: rgba(247,249,247,.88); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(226,232,240,.8);
+}
+html.dark .app-topbar { background: rgba(11,18,32,.9); border-color: rgba(51,65,85,.75); }
+.icon-button { width: 40px; height: 40px; border-radius: 13px; border: 1px solid #e2e8f0; background: rgba(255,255,255,.9); display: inline-flex; align-items: center; justify-content: center; color: #475569; transition: .2s ease; }
+.icon-button:hover { border-color: #a7f3d0; color: #278657; }
+html.dark .icon-button { background: #111827; border-color: #334155; color: #cbd5e1; }
+
+.mobile-bottom-nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; padding: 7px 10px max(7px, env(safe-area-inset-bottom)); pointer-events: none; }
+.mobile-bottom-nav-inner { pointer-events: auto; max-width: 520px; margin: 0 auto; height: 68px; padding: 6px 8px; display: grid; grid-template-columns: repeat(6,1fr); align-items: center; background: rgba(255,255,255,.94); border: 1px solid rgba(226,232,240,.9); border-radius: 22px; box-shadow: 0 14px 40px rgba(15,23,42,.16); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+html.dark .mobile-bottom-nav-inner { background: rgba(15,23,42,.96); border-color: rgba(51,65,85,.9); }
+.mobile-tab { min-width: 0; min-height: 54px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #94a3b8; font-size: 10px; font-weight: 800; text-decoration: none; }
+.mobile-tab-icon { width: 31px; height: 29px; border-radius: 12px; display: grid; place-items: center; }
+.mobile-tab.is-active { color: #278657; }
+.mobile-tab.is-active .mobile-tab-icon { background: #e9f8ef; }
+html.dark .mobile-tab.is-active { color: #86efac; }
+html.dark .mobile-tab.is-active .mobile-tab-icon { background: rgba(34,197,94,.13); }
+.mobile-tab.is-primary .mobile-tab-icon { width: 42px; height: 42px; margin-top: -20px; background: #3AAE6F; color: white; border: 4px solid white; border-radius: 16px; box-shadow: 0 8px 20px rgba(58,174,111,.3); }
+html.dark .mobile-tab.is-primary .mobile-tab-icon { border-color: #0f172a; }
+.mobile-tab.is-primary.is-active .mobile-tab-icon { background: #278657; }
+
+.app-hero-card { background: linear-gradient(135deg,#ffffff 0%,#f0faf4 100%); border: 1px solid #e2e8f0; border-radius: 28px; padding: 24px; box-shadow: 0 8px 30px rgba(15,23,42,.045); }
+html.dark .app-hero-card { background: linear-gradient(135deg,#111827 0%,#0e1d19 100%); border-color: #334155; }
+.health-glance-card, .app-section-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 24px; padding: 18px; }
+html.dark .health-glance-card, html.dark .app-section-card { background: #111827; border-color: #334155; }
+.app-primary-button, .app-secondary-button { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 14px; padding: 11px 16px; font-size: 14px; font-weight: 800; transition: .2s ease; }
+.app-primary-button { background: #3AAE6F; color: white; box-shadow: 0 7px 18px rgba(58,174,111,.2); }
+.app-primary-button:hover { background: #278657; transform: translateY(-1px); }
+.app-secondary-button { background: white; color: #334155; border: 1px solid #e2e8f0; }
+html.dark .app-secondary-button { background: #111827; color: #e2e8f0; border-color: #334155; }
+.quick-action-card { min-width: 0; min-height: 92px; display: flex; align-items: center; gap: 11px; background: #fff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 14px; transition: .2s ease; }
+.quick-action-card:hover { border-color: #a7f3d0; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15,23,42,.06); }
+html.dark .quick-action-card { background: #111827; border-color: #334155; }
+.quick-action-icon { width: 42px; height: 42px; border-radius: 14px; flex: 0 0 auto; display: grid; place-items: center; background: #eaf8ef; color: #278657; }
+html.dark .quick-action-icon { background: rgba(34,197,94,.12); color: #86efac; }
+.source-pill { display: inline-flex; align-items: center; gap: 5px; border-radius: 999px; background: #eefbf3; border: 1px solid #ccefd9; color: #278657; padding: 6px 9px; font-size: 10px; font-weight: 800; white-space: nowrap; }
+html.dark .source-pill { background: rgba(34,197,94,.1); border-color: rgba(74,222,128,.2); color: #86efac; }
+.food-data-row { display: flex; align-items: center; gap: 11px; border: 1px solid #e2e8f0; border-radius: 18px; padding: 12px; min-width: 0; }
+html.dark .food-data-row { border-color: #334155; background: rgba(15,23,42,.4); }
+.data-state-card { border: 1px dashed #cbd5e1; border-radius: 18px; padding: 16px; color: #64748b; font-size: 13px; background: #f8fafc; }
+html.dark .data-state-card { border-color: #475569; color: #94a3b8; background: rgba(15,23,42,.5); }
+.specialist-sheet { position: relative; margin-top: -18px; z-index: 5; background: #F7F9F7; border-radius: 24px 24px 0 0; padding: 18px 16px 28px; }
+html.dark .specialist-sheet { background: #0B1220; }
+.specialist-sheet-handle { width: 42px; height: 4px; background: #cbd5e1; border-radius: 999px; margin: 0 auto 14px; }
+.specialist-result-card { display: flex; gap: 12px; background: white; border: 1px solid #e2e8f0; border-radius: 18px; padding: 13px; }
+html.dark .specialist-result-card { background: #111827; border-color: #334155; }
+
+@media (max-width: 767px) {
+  .app-shell-main { padding-bottom: calc(88px + env(safe-area-inset-bottom)); }
+  .app-hero-card { border-radius: 22px; padding: 20px; }
+  .health-glance-card { margin-top: 2px; }
+  .quick-action-card { min-height: 88px; align-items: flex-start; flex-direction: column; gap: 8px; }
+  .quick-action-card > svg { display: none; }
+  .app-section-card { border-radius: 20px; padding: 16px; }
+
+  /* Tighter page-level spacing on mobile */
+  .mobile-page-padding { padding-left: 16px; padding-right: 16px; padding-top: 24px; padding-bottom: 24px; }
+
+  /* Make pill/chip rows horizontally scrollable */
+  .mobile-scroll-row { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; flex-wrap: nowrap !important; }
+  .mobile-scroll-row::-webkit-scrollbar { display: none; }
+
+  /* Horizontal scroll for data tables */
+  .mobile-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .mobile-table-scroll table { min-width: 520px; }
+
+  /* Specialist result cards single column */
+  .specialist-result-card { flex-direction: column; }
+}
+
+/* ======================================================== */
+/* ALTERAVIE ATMOSPHERE THEME TOKENS                        */
+/* ======================================================== */
+
+/* 🌿 1. Botanical (Default) */
+[data-theme="botanical"], html:not([data-theme]) {
+  --theme-primary: #3AAE6F;
+  --theme-primary-hover: #278657;
+  --theme-accent: #DCEBD8;
+  --theme-bg: #F7F9F7;
+  --theme-card: #FFFFFF;
+  --theme-text: #2D3748;
+  --theme-text-muted: #64748B;
+  --theme-heading: #1E293B;
+  --theme-font-body: "Inter", system-ui, sans-serif;
+  --theme-font-heading: "Plus Jakarta Sans", system-ui, sans-serif;
+  --theme-font-display: "Archivo Black", system-ui, sans-serif;
+}
+html.dark[data-theme="botanical"], html.dark:not([data-theme]) {
+  --theme-primary: #3AAE6F;
+  --theme-primary-hover: #278657;
+  --theme-accent: rgba(58,174,111,0.15);
+  --theme-bg: #0B1220;
+  --theme-card: #111827;
+  --theme-text: #F8FAFC;
+  --theme-text-muted: #94A3B8;
+  --theme-heading: #FFFFFF;
+  --theme-font-body: "Inter", system-ui, sans-serif;
+  --theme-font-heading: "Plus Jakarta Sans", system-ui, sans-serif;
+  --theme-font-display: "Archivo Black", system-ui, sans-serif;
+}
+
+/* 🍓 2. Berry Garden */
+[data-theme="berry"] {
+  --theme-primary: #E11D48;
+  --theme-primary-hover: #BE123C;
+  --theme-accent: #FFE4E6;
+  --theme-bg: #FFF1F2;
+  --theme-card: #FFFFFF;
+  --theme-text: #4C0519;
+  --theme-text-muted: #881337;
+  --theme-heading: #2E020D;
+  --theme-font-body: "Outfit", "Inter", system-ui, sans-serif;
+  --theme-font-heading: "Outfit", "Plus Jakarta Sans", system-ui, sans-serif;
+  --theme-font-display: "Archivo Black", "Outfit", system-ui, sans-serif;
+}
+html.dark[data-theme="berry"] {
+  --theme-primary: #F43F5E;
+  --theme-primary-hover: #E11D48;
+  --theme-accent: rgba(244,63,94,0.2);
+  --theme-bg: #1F0712;
+  --theme-card: #2D0C1A;
+  --theme-text: #FFF1F2;
+  --theme-text-muted: #FECDD3;
+  --theme-heading: #FFFFFF;
+  --theme-font-body: "Outfit", "Inter", system-ui, sans-serif;
+  --theme-font-heading: "Outfit", "Plus Jakarta Sans", system-ui, sans-serif;
+  --theme-font-display: "Archivo Black", "Outfit", system-ui, sans-serif;
+}
+
+/* 🍄 3. Enchanted Grove */
+[data-theme="enchanted"] {
+  --theme-primary: #15803D;
+  --theme-primary-hover: #166534;
+  --theme-accent: #FEF3C7;
+  --theme-bg: #FDFBF7;
+  --theme-card: #FFFFFF;
+  --theme-text: #1C3A27;
+  --theme-text-muted: #365314;
+  --theme-heading: #092212;
+  --theme-font-body: "Lora", "Inter", Georgia, serif;
+  --theme-font-heading: "Plus Jakarta Sans", "Space Grotesk", system-ui, sans-serif;
+  --theme-font-display: "Archivo Black", system-ui, sans-serif;
+}
+html.dark[data-theme="enchanted"] {
+  --theme-primary: #22C55E;
+  --theme-primary-hover: #15803D;
+  --theme-accent: rgba(251,191,36,0.18);
+  --theme-bg: #0C1F14;
+  --theme-card: #142E1F;
+  --theme-text: #F0FDF4;
+  --theme-text-muted: #BBF7D0;
+  --theme-heading: #FFFFFF;
+  --theme-font-body: "Lora", "Inter", Georgia, serif;
+  --theme-font-heading: "Plus Jakarta Sans", "Space Grotesk", system-ui, sans-serif;
+  --theme-font-display: "Archivo Black", system-ui, sans-serif;
+}
+
+/* 🌙 4. Moon Garden */
+[data-theme="moon"] {
+  --theme-primary: #6366F1;
+  --theme-primary-hover: #4F46E5;
+  --theme-accent: #E0E7FF;
+  --theme-bg: #0F172A;
+  --theme-card: #1E293B;
+  --theme-text: #F8FAFC;
+  --theme-text-muted: #CBD5E1;
+  --theme-heading: #FFFFFF;
+  --theme-font-body: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --theme-font-heading: "Space Grotesk", "Plus Jakarta Sans", system-ui, sans-serif;
+  --theme-font-display: "Archivo Black", "Space Grotesk", system-ui, sans-serif;
+}
+html.dark[data-theme="moon"] {
+  --theme-primary: #818CF8;
+  --theme-primary-hover: #6366F1;
+  --theme-accent: rgba(99,102,241,0.25);
+  --theme-bg: #0A0F1D;
+  --theme-card: #161F36;
+  --theme-text: #F8FAFC;
+  --theme-text-muted: #E2E8F0;
+  --theme-heading: #FFFFFF;
+  --theme-font-body: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --theme-font-heading: "Space Grotesk", "Plus Jakarta Sans", system-ui, sans-serif;
+  --theme-font-display: "Archivo Black", "Space Grotesk", system-ui, sans-serif;
+}
+
+/* 🍵 5. Cozy Tea */
+[data-theme="cozy_tea"] {
+  --theme-primary: #65A30D;
+  --theme-primary-hover: #4D7C0F;
+  --theme-accent: #ECFCCB;
+  --theme-bg: #FAF8F5;
+  --theme-card: #FFFFFF;
+  --theme-text: #365314;
+  --theme-text-muted: #4D7C0F;
+  --theme-heading: #1A2E05;
+  --theme-font-body: "DM Sans", "Inter", system-ui, sans-serif;
+  --theme-font-heading: "Plus Jakarta Sans", "DM Sans", system-ui, sans-serif;
+  --theme-font-display: "Archivo Black", system-ui, sans-serif;
+}
+html.dark[data-theme="cozy_tea"] {
+  --theme-primary: #84CC16;
+  --theme-primary-hover: #65A30D;
+  --theme-accent: rgba(132,204,22,0.18);
+  --theme-bg: #141C0C;
+  --theme-card: #1E2B13;
+  --theme-text: #F7FEE7;
+  --theme-text-muted: #D9F99D;
+  --theme-heading: #FFFFFF;
+  --theme-font-body: "DM Sans", "Inter", system-ui, sans-serif;
+  --theme-font-heading: "Plus Jakarta Sans", "DM Sans", system-ui, sans-serif;
+  --theme-font-display: "Archivo Black", system-ui, sans-serif;
+}
+
+/* 🌊 6. Seaside */
+[data-theme="seaside"] {
+  --theme-primary: #0284C7;
+  --theme-primary-hover: #0369A1;
+  --theme-accent: #E0F2FE;
+  --theme-bg: #F0F9FF;
+  --theme-card: #FFFFFF;
+  --theme-text: #0C4A6E;
+  --theme-text-muted: #0369A1;
+  --theme-heading: #082F49;
+  --theme-font-body: "Lexend", "Inter", system-ui, sans-serif;
+  --theme-font-heading: "Lexend", "Plus Jakarta Sans", system-ui, sans-serif;
+  --theme-font-display: "Archivo Black", "Lexend", system-ui, sans-serif;
+}
+html.dark[data-theme="seaside"] {
+  --theme-primary: #38BDF8;
+  --theme-primary-hover: #0284C7;
+  --theme-accent: rgba(56,189,248,0.2);
+  --theme-bg: #06192A;
+  --theme-card: #0F2942;
+  --theme-text: #F0F9FF;
+  --theme-text-muted: #BAE6FD;
+  --theme-heading: #FFFFFF;
+  --theme-font-body: "Lexend", "Inter", system-ui, sans-serif;
+  --theme-font-heading: "Lexend", "Plus Jakarta Sans", system-ui, sans-serif;
+  --theme-font-display: "Archivo Black", "Lexend", system-ui, sans-serif;
+}
+
+/* 🌸 7. Sakura */
+[data-theme="sakura"] {
+  --theme-primary: #EC4899;
+  --theme-primary-hover: #BE185D;
+  --theme-accent: #FCE7F3;
+  --theme-bg: #FFF5F8;
+  --theme-card: #FFFFFF;
+  --theme-text: #831843;
+  --theme-text-muted: #9D174D;
+  --theme-heading: #500724;
+  --theme-font-body: "Outfit", "Playfair Display", system-ui, sans-serif;
+  --theme-font-heading: "Playfair Display", "Outfit", Georgia, serif;
+  --theme-font-display: "Archivo Black", "Playfair Display", system-ui, sans-serif;
+}
+html.dark[data-theme="sakura"] {
+  --theme-primary: #F472B6;
+  --theme-primary-hover: #EC4899;
+  --theme-accent: rgba(244,114,182,0.2);
+  --theme-bg: #230818;
+  --theme-card: #341026;
+  --theme-text: #FDF2F8;
+  --theme-text-muted: #FBCFE8;
+  --theme-heading: #FFFFFF;
+  --theme-font-body: "Outfit", "Playfair Display", system-ui, sans-serif;
+  --theme-font-heading: "Playfair Display", "Outfit", Georgia, serif;
+  --theme-font-display: "Archivo Black", "Playfair Display", system-ui, sans-serif;
+}
+
+/* ================================================================= */
+/* TYPOGRAPHY ADAPTATION SYSTEM & LEGIBILITY ENHANCEMENTS            */
+/* Ensures text is clear, crisp, and high-contrast across all themes  */
+/* ================================================================= */
+
+/* Enforce font family & base colors per active theme */
+html[data-theme] {
+  font-family: var(--theme-font-body, var(--font-body)) !important;
+}
+
+html[data-theme] body {
+  font-family: var(--theme-font-body, var(--font-body)) !important;
+  color: var(--theme-text) !important;
+}
+
+html[data-theme] h1,
+html[data-theme] h2,
+html[data-theme] h3,
+html[data-theme] h4,
+html[data-theme] h5,
+html[data-theme] h6,
+html[data-theme] .font-heading {
+  font-family: var(--theme-font-heading, var(--font-heading)) !important;
+  color: var(--theme-heading) !important;
+}
+
+html[data-theme] .font-display {
+  font-family: var(--theme-font-display, var(--font-display)) !important;
+}
+
+/* Legibility overrides for Dark Mode & Dark Themes (e.g. Moon Garden or html.dark) */
+html.dark[data-theme],
+[data-theme="moon"] {
+  color: var(--theme-text) !important;
+}
+
+html.dark[data-theme] .text-slate-900,
+html.dark[data-theme] .text-slate-800,
+html.dark[data-theme] .text-slate-700,
+html.dark[data-theme] .text-gray-900,
+html.dark[data-theme] .text-gray-800,
+html.dark[data-theme] .text-\[\#4A4A4A\],
+[data-theme="moon"] .text-slate-900,
+[data-theme="moon"] .text-slate-800,
+[data-theme="moon"] .text-slate-700,
+[data-theme="moon"] .text-gray-900,
+[data-theme="moon"] .text-gray-800,
+[data-theme="moon"] .text-\[\#4A4A4A\] {
+  color: var(--theme-text) !important;
+}
+
+html.dark[data-theme] .text-slate-600,
+html.dark[data-theme] .text-slate-500,
+html.dark[data-theme] .text-gray-600,
+html.dark[data-theme] .text-gray-500,
+[data-theme="moon"] .text-slate-600,
+[data-theme="moon"] .text-slate-500,
+[data-theme="moon"] .text-gray-600,
+[data-theme="moon"] .text-gray-500 {
+  color: var(--theme-text-muted) !important;
+}
+
+/* Secondary muted text contrast adaptation for light theme presets */
+html[data-theme]:not([data-theme="botanical"]):not([data-theme="moon"]) .text-slate-500,
+html[data-theme]:not([data-theme="botanical"]):not([data-theme="moon"]) .text-slate-600 {
+  color: var(--theme-text-muted) !important;
+}
+
+html[data-theme]:not([data-theme="botanical"]):not([data-theme="moon"]) .text-slate-900,
+html[data-theme]:not([data-theme="botanical"]):not([data-theme="moon"]) .text-slate-800 {
+  color: var(--theme-heading) !important;
+}
+
+/* ================================================================= */
+/* CHATBOT THEME & TYPOGRAPHY ADAPTATION OVERRIDES                   */
+/* Ensures AI Chatbot text, messages, widgets & inputs are legible   */
+/* ================================================================= */
+
+html[data-theme] input::placeholder,
+html[data-theme] textarea::placeholder {
+  color: color-mix(in srgb, var(--theme-text) 55%, transparent) !important;
+}
+
+/* Chatbot container font inheritance */
+html[data-theme] form input[type="text"],
+html[data-theme] form textarea {
+  font-family: var(--theme-font-body) !important;
+  color: var(--theme-text) !important;
+  background-color: color-mix(in srgb, var(--theme-card) 92%, var(--theme-accent) 8%) !important;
+  border-color: color-mix(in srgb, var(--theme-primary) 30%, transparent) !important;
+}
+
+/* Chatbot messages background */
+html[data-theme] [class*="bg-[#F7F9F7]"] {
+  background-color: var(--theme-bg) !important;
+}
+
+/* Chatbot white cards & bot bubble backgrounds */
+html[data-theme] [class*="bg-[#FFFFFF]"],
+html[data-theme] [class*="bg-white"] {
+  background-color: var(--theme-card) !important;
+}
+
+/* Chatbot hardcoded text color overrides */
+html[data-theme] [class*="text-[#4A4A4A]"],
+html[data-theme] [class*="text-[#4a4a4a]"] {
+  color: var(--theme-text) !important;
+}
+
+/* Chatbot accent green text -> theme primary */
+html[data-theme] [class*="text-[#3AAE6F]"],
+html[data-theme] [class*="text-[#3aae6f]"] {
+  color: var(--theme-primary) !important;
+}
+
+/* Chatbot accent green background -> theme primary */
+html[data-theme] [class*="bg-[#3AAE6F]"],
+html[data-theme] [class*="bg-[#3aae6f]"] {
+  background-color: var(--theme-primary) !important;
+  color: #FFFFFF !important;
+}
+
+/* Chatbot soft sage accent backgrounds -> theme accent card mix */
+html[data-theme] [class*="bg-[#DCEBD8]"] {
+  background-color: color-mix(in srgb, var(--theme-accent) 60%, var(--theme-card)) !important;
+}
+
+/* Chatbot border overrides */
+html[data-theme] [class*="border-[#3AAE6F]"] {
+  border-color: color-mix(in srgb, var(--theme-primary) 30%, transparent) !important;
+}
+
+/* Suggested prompt chips */
+html[data-theme] button[class*="border-[#3AAE6F]"] {
+  color: var(--theme-primary) !important;
+  background-color: var(--theme-card) !important;
+  border-color: color-mix(in srgb, var(--theme-primary) 35%, transparent) !important;
+}
+
+html[data-theme] button[class*="border-[#3AAE6F]"]:hover {
+  background-color: var(--theme-primary) !important;
+  color: #FFFFFF !important;
+}
+
+/* ================================================================= */
+/* GLOBAL ALL-PAGE ATMOSPHERE THEME STYLING OVERRIDES                */
+/* Applies active theme colors & fonts across EVERY SINGLE PAGE       */
+/* ================================================================= */
+
+/* Page Background Adaptation */
+html[data-theme] body,
+html[data-theme] .min-h-screen,
+html[data-theme] .app-shell-main,
+html[data-theme] [class*="bg-[#F7F9F7]"],
+html[data-theme] [class*="bg-[#0B1220]"],
+html[data-theme] [class*="bg-[#0F172A]"] {
+  background-color: var(--theme-bg) !important;
+}
+
+/* Card Surface & Container Adaptation */
+html[data-theme] .app-section-card,
+html[data-theme] .health-glance-card,
+html[data-theme] .quick-action-card,
+html[data-theme] .specialist-result-card,
+html[data-theme] [class*="bg-white"],
+html[data-theme] [class*="bg-[#FFFFFF]"],
+html[data-theme] [class*="bg-slate-900"],
+html[data-theme] [class*="bg-slate-800"] {
+  background-color: var(--theme-card) !important;
+  color: var(--theme-text) !important;
+}
+
+/* Primary Brand Accent Colors (Buttons, Badges, Highlights) */
+html[data-theme] .app-primary-button,
+html[data-theme] .btn-green-primary,
+html[data-theme] [class*="bg-[#3AAE6F]"],
+html[data-theme] [class*="bg-[#278657]"] {
+  background-color: var(--theme-primary) !important;
+  color: #FFFFFF !important;
+}
+
+html[data-theme] .app-primary-button:hover,
+html[data-theme] .btn-green-primary:hover {
+  background-color: var(--theme-primary-hover) !important;
+}
+
+/* Primary Brand Text Colors */
+html[data-theme] [class*="text-[#3AAE6F]"],
+html[data-theme] [class*="text-[#278657]"] {
+  color: var(--theme-primary) !important;
+}
+
+/* Primary Brand Border Colors */
+html[data-theme] [class*="border-[#3AAE6F]"],
+html[data-theme] [class*="border-[#278657]"] {
+  border-color: color-mix(in srgb, var(--theme-primary) 40%, transparent) !important;
+}
+
+/* Soft Accent Containers & Light Chips */
+html[data-theme] .source-pill,
+html[data-theme] .quick-action-icon,
+html[data-theme] [class*="bg-[#DCEBD8]"],
+html[data-theme] [class*="bg-emerald-50"],
+html[data-theme] [class*="bg-emerald-100"] {
+  background-color: color-mix(in srgb, var(--theme-accent) 60%, var(--theme-card)) !important;
+  color: var(--theme-primary) !important;
+}
+
+/* Headings & Title Typography Adaptation */
+html[data-theme] h1,
+html[data-theme] h2,
+html[data-theme] h3,
+html[data-theme] h4,
+html[data-theme] h5,
+html[data-theme] h6,
+html[data-theme] .font-heading,
+html[data-theme] [class*="text-slate-955"],
+html[data-theme] [class*="text-slate-950"],
+html[data-theme] [class*="text-slate-900"],
+html[data-theme] [class*="text-slate-800"] {
+  font-family: var(--theme-font-heading, var(--font-heading)) !important;
+  color: var(--theme-heading) !important;
+}
+
+/* Base Body & Secondary Text Adaptation */
+html[data-theme] p,
+html[data-theme] span,
+html[data-theme] label,
+html[data-theme] [class*="text-[#4A4A4A]"],
+html[data-theme] [class*="text-[#4a4a4a]"] {
+  color: var(--theme-text) !important;
+}
+
+html[data-theme] [class*="text-slate-600"],
+html[data-theme] [class*="text-slate-500"],
+html[data-theme] [class*="text-slate-400"],
+html[data-theme] [class*="text-[#5A6A80]"] {
+  color: var(--theme-text-muted) !important;
+}
+
+/* Form Inputs & Textareas Adaptation */
+html[data-theme] input[type="text"],
+html[data-theme] input[type="number"],
+html[data-theme] input[type="email"],
+html[data-theme] input[type="password"],
+html[data-theme] select,
+html[data-theme] textarea {
+  font-family: var(--theme-font-body) !important;
+  color: var(--theme-text) !important;
+  background-color: var(--theme-card) !important;
+  border-color: color-mix(in srgb, var(--theme-primary) 30%, transparent) !important;
+}
+
+/* Navigation Bar Topbar & Bottom Bar Adaptation */
+html[data-theme] .app-topbar,
+html[data-theme] .mobile-bottom-nav-inner {
+  background-color: color-mix(in srgb, var(--theme-card) 92%, var(--theme-bg) 8%) !important;
+  border-color: color-mix(in srgb, var(--theme-primary) 20%, transparent) !important;
+}

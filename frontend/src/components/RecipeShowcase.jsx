@@ -1,0 +1,8 @@
+import { useEffect, useState } from "react";
+import { api } from "../api/client";
+import { Link } from "react-router-dom";
+export default function RecipeShowcase(){
+ const [foods,setFoods]=useState([]),[status,setStatus]=useState("Loading live USDA foods…");
+ useEffect(()=>{api.getLiveFoodRecommendations("iron","vegetarian").then(r=>{setFoods(r.foods||[]);setStatus("")}).catch(()=>setStatus("Live USDA data is unavailable right now; no static foods are substituted."));},[]);
+ return <section className="py-14 sm:py-20 bg-white"><div className="max-w-6xl mx-auto px-4 sm:px-6"><div className="flex flex-col sm:flex-row justify-between gap-3 mb-8"><div><span className="text-xs font-bold uppercase tracking-widest text-emerald-600">Live USDA FoodData Central</span><h2 className="text-3xl sm:text-5xl font-extrabold uppercase">Real food data</h2></div><Link to="/recommendations" className="text-emerald-700 font-bold">Personalized recommendations →</Link></div>{status&&<p className="text-sm opacity-70">{status}</p>}<div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">{foods.slice(0,6).map(f=><article key={f.fdc_id} className="rounded-2xl border p-5 bg-emerald-50/40"><p className="text-[10px] font-bold uppercase tracking-wider text-emerald-700">{f.data_type||"USDA record"}</p><h3 className="font-extrabold mt-2 leading-snug">{f.name}</h3><div className="mt-4 text-sm space-y-1">{Object.entries(f.nutrients||{}).slice(0,4).map(([k,v])=><div key={k} className="flex justify-between gap-3"><span className="capitalize opacity-70">{k}</span><strong>{v}</strong></div>)}</div><a href={f.source_url} target="_blank" rel="noreferrer" className="inline-block mt-4 text-xs font-bold text-emerald-700">View USDA source ↗</a></article>)}</div></div></section>
+}

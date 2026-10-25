@@ -1,0 +1,9 @@
+node_modules/
+dist/
+__pycache__/
+*.pyc
+*.db
+venv/
+.venv/
+backend/module2_prediction/data/*.xpt
+backend/module2_prediction/data/*.part

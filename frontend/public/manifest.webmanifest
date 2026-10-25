@@ -1,0 +1,10 @@
+{
+  "name": "AlteraVie Nutrition",
+  "short_name": "AlteraVie",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3AAE6F",
+  "description": "Source-grounded nutrition assessment and RAG assistant",
+  "icons": []
+}

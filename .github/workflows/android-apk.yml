@@ -1,0 +1,75 @@
+name: Build AlteraVie Android APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      backend_url:
+        description: Public HTTPS URL of the deployed AlteraVie FastAPI backend
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      VITE_API_BASE: ${{ inputs.backend_url }}
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Validate backend URL
+        shell: bash
+        run: |
+          if [[ ! "$VITE_API_BASE" =~ ^https:// ]]; then
+            echo "backend_url must start with https://" >&2
+            exit 1
+          fi
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK components
+        run: sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm install --no-audit --no-fund
+
+      - name: Build production web assets
+        working-directory: frontend
+        run: npm run build
+
+      - name: Generate Android project
+        working-directory: frontend
+        run: npx cap add android
+
+      - name: Sync Capacitor project
+        working-directory: frontend
+        run: npx cap sync android
+
+      - name: Build debug APK
+        working-directory: frontend/android
+        run: chmod +x gradlew && ./gradlew --no-daemon assembleDebug
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AlteraVie-Android-debug-apk
+          path: frontend/android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14

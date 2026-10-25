@@ -1,0 +1,21 @@
+# AlteraVie API — free web service configuration.
+# IMPORTANT: this uses a free instance with ephemeral local storage. Set DATABASE_URL
+# to an external free PostgreSQL database (for example, a Supabase free project).
+# Do not attach a paid disk or upgrade the service if the zero-cost requirement is strict.
+services:
+  - type: web
+    name: alteravie-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    healthCheckPath: /
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        sync: false
+      - key: ALLOWED_ORIGINS
+        value: https://localhost,http://localhost:5173,http://127.0.0.1:5173
+      - key: USDA_FDC_API_KEY
+        sync: false
