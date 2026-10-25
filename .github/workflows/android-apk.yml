@@ -85,12 +85,7 @@ jobs:
 
       - name: Install frontend dependencies
         working-directory: source/altandroid/frontend
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci --no-audit --no-fund
-          else
-            npm install --no-audit --no-fund
-          fi
+        run: npm install --no-audit --no-fund
 
       - name: Prepare AlteraVie launcher icon
         working-directory: source/altandroid/frontend
