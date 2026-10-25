@@ -108,7 +108,7 @@ jobs:
 
       - name: Install Capacitor TypeScript support
         working-directory: source/altandroid/frontend
-        run: npm install --no-save --no-audit --no-fund typescript
+        run: npm install --no-save --no-audit --no-fund typescript@5.7.3
 
       - name: Generate Android project and branded icons
         working-directory: source/altandroid/frontend
