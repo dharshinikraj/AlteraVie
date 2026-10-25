@@ -98,6 +98,7 @@ jobs:
           node --input-type=module <<'NODE'
           import sharp from 'sharp';
           const source = 'assets/alteravie-icon.svg';
+          await sharp(source).resize(1024, 1024).png().toFile('assets/icon.png');
           await sharp(source).resize(1024, 1024).png().toFile('assets/icon-only.png');
           // Capacitor's Android adaptive launcher icon uses these two files.
           await sharp(source).resize(1024, 1024).png().toFile('assets/icon-foreground.png');
