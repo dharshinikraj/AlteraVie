@@ -4,8 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       backend_url:
-        description: "Public HTTPS URL of the deployed AlteraVie FastAPI backend"
-        required: true
+        description: "Optional public HTTPS URL of the AlteraVie FastAPI backend (leave blank to build the APK without hosted API features)"
+        required: false
+        default: ""
         type: string
 
 permissions:
@@ -17,16 +18,21 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - name: Validate backend URL
+      - name: Configure optional backend URL
         shell: bash
         env:
           BACKEND_URL: ${{ inputs.backend_url }}
         run: |
-          if [[ "$BACKEND_URL" != https://* ]]; then
-            echo "::error::Enter the public HTTPS URL of the deployed backend."
-            exit 1
+          if [[ -n "$BACKEND_URL" ]]; then
+            if [[ "$BACKEND_URL" != https://* ]]; then
+              echo "::error::If supplied, the backend URL must start with https://"
+              exit 1
+            fi
+            echo "VITE_API_BASE=${BACKEND_URL%/}" >> "$GITHUB_ENV"
+          else
+            echo "VITE_API_BASE=" >> "$GITHUB_ENV"
+            echo "Building without a hosted backend URL. Features requiring the API may not work until a backend is hosted."
           fi
-          echo "VITE_API_BASE=${BACKEND_URL%/}" >> "$GITHUB_ENV"
 
       - name: Check out repository
         uses: actions/checkout@v4
@@ -75,16 +81,30 @@ jobs:
             npm install --no-audit --no-fund
           fi
 
+      - name: Prepare AlteraVie launcher icon
+        working-directory: source/altandroid/frontend
+        run: |
+          npm install --no-save --no-audit --no-fund sharp @capacitor/assets
+          mkdir -p assets
+          cp "$GITHUB_WORKSPACE/android-assets/alteravie-icon.svg" assets/alteravie-icon.svg
+          node --input-type=module <<'NODE'
+          import sharp from 'sharp';
+          const source = 'assets/alteravie-icon.svg';
+          await sharp(source).resize(1024, 1024).png().toFile('assets/icon-only.png');
+          await sharp(source).resize(1024, 1024).png().toFile('assets/splash.png');
+          NODE
+
       - name: Build frontend
         working-directory: source/altandroid/frontend
         env:
           VITE_API_BASE: ${{ inputs.backend_url }}
         run: npm run build
 
-      - name: Generate and sync Android project
+      - name: Generate Android project and branded icons
         working-directory: source/altandroid/frontend
         run: |
           npx cap add android
+          npx capacitor-assets generate --android
           npx cap sync android
 
       - name: Build debug APK
