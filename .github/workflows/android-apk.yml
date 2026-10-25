@@ -1,6 +1,8 @@
 name: Build AlteraVie Android APK
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       backend_url:
@@ -97,6 +99,10 @@ jobs:
           import sharp from 'sharp';
           const source = 'assets/alteravie-icon.svg';
           await sharp(source).resize(1024, 1024).png().toFile('assets/icon-only.png');
+          // Capacitor's Android adaptive launcher icon uses these two files.
+          await sharp(source).resize(1024, 1024).png().toFile('assets/icon-foreground.png');
+          await sharp({ create: { width: 1024, height: 1024, channels: 4, background: '#FFF9EF' } })
+            .png().toFile('assets/icon-background.png');
           await sharp(source).resize(1024, 1024).png().toFile('assets/splash.png');
           NODE
 
