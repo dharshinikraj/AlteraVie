@@ -10,7 +10,7 @@ on:
         type: string
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build-apk:
@@ -120,3 +120,15 @@ jobs:
           path: source/altandroid/frontend/android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 14
+
+      - name: Publish APK as a public GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          TAG="apk-v${GITHUB_RUN_NUMBER}"
+          gh release create "$TAG" \
+            source/altandroid/frontend/android/app/build/outputs/apk/debug/app-debug.apk \
+            --repo "$REPOSITORY" \
+            --title "AlteraVie Android APK $TAG" \
+            --notes "Installable AlteraVie Android APK built by GitHub Actions. Backend-dependent features require a reachable API server."
