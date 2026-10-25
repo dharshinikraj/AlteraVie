@@ -90,7 +90,7 @@ jobs:
       - name: Prepare AlteraVie launcher icon
         working-directory: source/altandroid/frontend
         run: |
-          npm install --no-save --no-audit --no-fund sharp @capacitor/assets
+          npm install --no-save --no-audit --no-fund sharp @capacitor/assets typescript@5.7.3
           mkdir -p assets
           cp "$GITHUB_WORKSPACE/android-assets/alteravie-icon.svg" assets/alteravie-icon.svg
           node --input-type=module <<'NODE'
@@ -105,10 +105,6 @@ jobs:
         env:
           VITE_API_BASE: ${{ inputs.backend_url }}
         run: npm run build
-
-      - name: Install Capacitor TypeScript support
-        working-directory: source/altandroid/frontend
-        run: npm install --no-save --no-audit --no-fund typescript@5.7.3
 
       - name: Generate Android project and branded icons
         working-directory: source/altandroid/frontend
