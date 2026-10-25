@@ -106,6 +106,10 @@ jobs:
           VITE_API_BASE: ${{ inputs.backend_url }}
         run: npm run build
 
+      - name: Install Capacitor TypeScript support
+        working-directory: source/altandroid/frontend
+        run: npm install --no-save --no-audit --no-fund typescript
+
       - name: Generate Android project and branded icons
         working-directory: source/altandroid/frontend
         run: |
