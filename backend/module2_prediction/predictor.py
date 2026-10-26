@@ -35,7 +35,7 @@ class DeficiencyPredictor:
             return
         if os.path.exists(MODEL_PATH):
             try:
-                obj = joblib.load(MODEL_PATH)
+                obj = joblib.load(MODEL_PATH, mmap_mode="r")
                 if self._valid_bundle(obj):
                     self._bundle = obj
                     return
