@@ -146,8 +146,7 @@ function ErrorCard({ message }) {
   return (
     <Card className="border-clay-400/40 dark:border-rose-900 bg-clay-100/40 dark:bg-rose-950/40">
       <p className="text-sm text-clay-500 dark:text-rose-300">
-        Couldn't reach the prediction service: {message}. Make sure the
-        backend is running at the configured API URL.
+        Prediction service error: {message}
       </p>
     </Card>
   );

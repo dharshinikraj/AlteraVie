@@ -23,7 +23,8 @@ async function request(path, options = {}) {
     });
   } catch (err) {
     const target = API_BASE || window.location.origin;
-    throw new Error(`Cannot reach the AlteraVie API at ${target}. Make sure the backend is running and reachable from this device.`);
+    const reason = err instanceof Error && err.message ? ` ${err.message}` : "";
+    throw new Error(`Cannot reach the AlteraVie API at ${target}.${reason}`);
   }
 
   if (!res.ok) {
@@ -38,7 +39,7 @@ async function request(path, options = {}) {
     } catch {
       /* response wasn't JSON */
     }
-    throw new Error(detail);
+    throw new Error(`API request failed (HTTP ${res.status}${res.statusText ? ` ${res.statusText}` : ""}): ${detail}`);
   }
 
   return res.json();
